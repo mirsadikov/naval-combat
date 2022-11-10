@@ -1,38 +1,53 @@
-.App {
+.square {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  border: 1px solid black;
+  font-size: 30px;
+  line-height: 50px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.square--selected {
+  background-color: grey;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.field {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  grid-template-rows: repeat(5, 50px);
+  margin: 2rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.field-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
 }
 
-.App-link {
-  color: #61dafb;
+.field__buttons {
+  align-self: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.own .square--ships {
+  background-color: black;
+}
+
+.own .square--hits {
+  background-color: red;
+}
+
+.own .square--misses {
+  background-color: lightblue;
+}
+
+.enemy .square--hits {
+  background-color: green;
+}
+
+.enemy .square--misses {
+  background-color: lightcoral;
+}
+
+.enemy .square--target {
+  background-color: yellow;
 }
