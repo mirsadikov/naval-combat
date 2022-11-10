@@ -23,7 +23,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.startGame = this.startGame.bind(this);
-    this.selectSquare = this.selectSquare.bind(this);
     this.confirmSquare = this.confirmSquare.bind(this);
     this.selectAttack = this.selectAttack.bind(this);
     this.attack = this.attack.bind(this);
@@ -45,32 +44,18 @@ class App extends React.Component {
     this.setState({ ...initialState, step: 1, turn: 1 });
   }
 
-  // select squares
-  selectSquare(e) {
-    const square = e.target;
-    if (square.classList.contains('square')) {
-      const number = square.dataset.number;
-      const ships = `ships_${this.state.turn}`;
-
-      if (this.state[ships].includes(number)) {
-        this.setState({
-          [ships]: this.state[ships].filter((item) => item !== number),
-        });
-      } else if (this.state[ships].length < 8) {
-        this.setState((state) => {
-          return { [ships]: [...state[ships], number] };
-        });
-      }
-    }
-  }
-
   // confirm squares
-  confirmSquare() {
-    if (this.state.turn === 1 && this.state.ships_1.length === 8) {
-      this.setState({ turn: 2 });
-    }
-    if (this.state.turn === 2 && this.state.ships_2.length === 8) {
-      this.setState({ step: 2, turn: 1, turnChange: true, turnEnd: true });
+  confirmSquare(ships) {
+    if (this.state.turn === 1) {
+      this.setState({ turn: 2, ships_1: ships });
+    } else if (this.state.turn === 2) {
+      this.setState({
+        step: 2,
+        ships_2: ships,
+        turn: 1,
+        turnChange: true,
+        turnEnd: true,
+      });
     }
   }
 
@@ -147,10 +132,8 @@ class App extends React.Component {
         {this.state.step === 0 && <MainMenu startGame={this.startGame} />}
         {this.state.step === 1 && (
           <ShipsArrangementScreen
-            state={this.state}
-            onClick={this.selectSquare}
             confirmSquare={this.confirmSquare}
-            ships={this.state[`ships_${this.state.turn}`]}
+            turn={this.state.turn}
           />
         )}
         {this.state.step === 2 && (
