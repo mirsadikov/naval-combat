@@ -1,9 +1,9 @@
 import './App.css';
-// import Field from './components/Field';
 import React from 'react';
 import MainMenu from './components/MainMenu';
 import ShipsArrangementScreen from './components/ShipsArrangementScreen';
 import GameScreen from './components/GameScreen';
+import WinScreen from './components/WinScreen';
 
 const initialState = {
   step: 0,
@@ -30,22 +30,9 @@ class App extends React.Component {
     this.endTurn = this.endTurn.bind(this);
     this.startTurn = this.startTurn.bind(this);
     this.newGame = this.newGame.bind(this);
-    this.endGame = this.endGame.bind(this);
+    this.checkEndGame = this.checkEndGame.bind(this);
 
     this.state = initialState;
-  }
-
-  componentDidUpdate() {
-    if (
-      this.state.step === 2 &&
-      this.state[`ships_${this.state.turn === 1 ? 2 : 1}`].length === 0
-    ) {
-      this.setState({ step: 3 });
-    }
-
-    if (this.state.step === 3) {
-      this.endGame();
-    }
   }
 
   // start game
@@ -83,7 +70,7 @@ class App extends React.Component {
       this.setState({ turn: 2 });
     }
     if (this.state.turn === 2 && this.state.ships_2.length === 8) {
-      this.setState({ step: 2, turn: 1 });
+      this.setState({ step: 2, turn: 1, turnChange: true, turnEnd: true });
     }
   }
 
@@ -117,9 +104,9 @@ class App extends React.Component {
         this.setState((state) => {
           return {
             [hits]: [...state[hits], target],
-            [ships]: state[ships].filter((item) => item !== target),
+            // [ships]: state[ships].filter((item) => item !== target),
           };
-        });
+        }, this.checkEndGame);
       } else {
         this.setState((state) => {
           return { [misses]: [...state[misses], target], turnChange: true };
@@ -148,9 +135,10 @@ class App extends React.Component {
   }
 
   // end game
-  endGame() {
-    alert(`Player ${this.state.turn === 1 ? 2 : 1} wins!`);
-    this.newGame();
+  checkEndGame() {
+    if (this.state.hits_1.length === 8 || this.state.hits_2.length === 8) {
+      this.setState({ step: 3 });
+    }
   }
 
   render() {
@@ -175,7 +163,9 @@ class App extends React.Component {
             endTurn={this.endTurn}
           />
         )}
-        {/* {this.state.step === 3 && <WinScreen />} */}
+        {this.state.step === 3 && (
+          <WinScreen newGame={this.newGame} state={this.state} />
+        )}
       </div>
     );
   }
