@@ -8,7 +8,6 @@ class Field extends React.Component {
     this.currentField = React.createRef();
   }
   componentDidMount() {
-    console.log(this.props.node);
     this.renderFields();
   }
 
@@ -18,33 +17,23 @@ class Field extends React.Component {
 
   renderFields() {
     const field = this.currentField.current;
+    const addClassLoop = (squares, className) => {
+      squares.forEach((s) => {
+        field
+          .querySelector(`.square[data-number="${s}"]`)
+          .classList.add(className);
+      });
+    };
+
     if (this.props.ships) {
       field.querySelectorAll('.square--ships').forEach((item) => {
         item.classList.remove('square--ships');
       });
-
-      this.props.ships.forEach((square) => {
-        field
-          .querySelector(`.square[data-number="${square}"]`)
-          .classList.add('square--ships');
-      });
+      addClassLoop(this.props.ships, 'square--ships');
     }
 
-    if (this.props.hits) {
-      this.props.hits.forEach((square) => {
-        field
-          .querySelector(`.square[data-number="${square}"]`)
-          .classList.add('square--hits');
-      });
-    }
-
-    if (this.props.misses) {
-      this.props.misses.forEach((square) => {
-        field
-          .querySelector(`.square[data-number="${square}"]`)
-          .classList.add('square--misses');
-      });
-    }
+    if (this.props.hits) addClassLoop(this.props.hits, 'square--hits');
+    if (this.props.misses) addClassLoop(this.props.misses, 'square--misses');
   }
 
   render() {
