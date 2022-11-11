@@ -2,47 +2,6 @@ import React from 'react';
 import Field from './Field';
 
 class GameScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.renderOwn = this.renderOwn.bind(this);
-    this.renderEnemy = this.renderEnemy.bind(this);
-  }
-
-  renderOwn() {
-    this.props.state[`ships_${this.props.state.turn}`].forEach((square) => {
-      document
-        .querySelector(`.own .square[data-number="${square}"]`)
-        .classList.add('square--ships');
-    });
-    this.props.state[`hits_${this.props.state.turn === 1 ? 2 : 1}`].forEach(
-      (square) => {
-        document
-          .querySelector(`.own .square[data-number="${square}"]`)
-          .classList.add('square--hits');
-      },
-    );
-    this.props.state[`misses_${this.props.state.turn === 1 ? 2 : 1}`].forEach(
-      (square) => {
-        document
-          .querySelector(`.own .square[data-number="${square}"]`)
-          .classList.add('square--misses');
-      },
-    );
-  }
-
-  renderEnemy() {
-    this.props.state[`hits_${this.props.state.turn}`].forEach((square) => {
-      document
-        .querySelector(`.enemy .square[data-number="${square}"]`)
-        .classList.add('square--hits');
-    });
-    this.props.state[`misses_${this.props.state.turn}`].forEach((square) => {
-      document
-        .querySelector(`.enemy .square[data-number="${square}"]`)
-        .classList.add('square--misses');
-    });
-  }
-
   render() {
     return (
       <div className="game-screen">
@@ -55,15 +14,15 @@ class GameScreen extends React.Component {
             <Field
               className={this.props.state.turn === 1 ? 'own' : 'enemy'}
               title={this.props.state.turn === 1 ? 'Your field' : 'Enemy field'}
-              renderFields={
-                this.props.state.turn === 1 ? this.renderOwn : this.renderEnemy
-              }
+              ships={this.props.state.turn === 1 && this.props.state.ships_1}
+              hits={this.props.state.hits_2}
+              misses={this.props.state.misses_2}
               onClick={
                 this.props.state.turn === 2
                   ? this.props.selectAttack
                   : undefined
               }
-            />
+            />  
           )}
 
           <div className="field__buttons">
@@ -82,9 +41,9 @@ class GameScreen extends React.Component {
             <Field
               className={this.props.state.turn === 2 ? 'own' : 'enemy'}
               title={this.props.state.turn === 2 ? 'Your field' : 'Enemy field'}
-              renderFields={
-                this.props.state.turn === 2 ? this.renderOwn : this.renderEnemy
-              }
+              ships={this.props.state.turn === 2 && this.props.state.ships_2}
+              hits={this.props.state.hits_1}
+              misses={this.props.state.misses_1}
               onClick={
                 this.props.state.turn === 1
                   ? this.props.selectAttack

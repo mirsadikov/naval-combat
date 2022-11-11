@@ -2,13 +2,51 @@ import React from 'react';
 import Square from './Square';
 
 class Field extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderFields = this.renderFields.bind(this);
+    this.currentField = React.createRef();
+  }
   componentDidMount() {
-    this.props.renderFields();
+    console.log(this.props.node);
+    this.renderFields();
   }
 
   componentDidUpdate() {
-    this.props.renderFields();
+    this.renderFields();
   }
+
+  renderFields() {
+    const field = this.currentField.current;
+    if (this.props.ships) {
+      field.querySelectorAll('.square--ships').forEach((item) => {
+        item.classList.remove('square--ships');
+      });
+
+      this.props.ships.forEach((square) => {
+        field
+          .querySelector(`.square[data-number="${square}"]`)
+          .classList.add('square--ships');
+      });
+    }
+
+    if (this.props.hits) {
+      this.props.hits.forEach((square) => {
+        field
+          .querySelector(`.square[data-number="${square}"]`)
+          .classList.add('square--hits');
+      });
+    }
+
+    if (this.props.misses) {
+      this.props.misses.forEach((square) => {
+        field
+          .querySelector(`.square[data-number="${square}"]`)
+          .classList.add('square--misses');
+      });
+    }
+  }
+
   render() {
     return (
       <div>
@@ -16,6 +54,7 @@ class Field extends React.Component {
         <div
           className={`${this.props.className} field`}
           onClick={this.props.onClick}
+          ref={this.currentField}
         >
           <Square number={1} />
           <Square number={2} />

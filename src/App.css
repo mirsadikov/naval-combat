@@ -8,7 +8,7 @@
   text-align: center;
 }
 
-.square--selected {
+.select .square--ships {
   background-color: grey;
 }
 

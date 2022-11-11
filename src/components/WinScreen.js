@@ -2,24 +2,6 @@ import React from 'react';
 import Field from './Field';
 
 class WinScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.renderFields = this.renderFields.bind(this);
-  }
-
-  renderFields() {
-    this.props.state.ships_1.forEach((square) => {
-      document
-        .querySelector(`.player1 .square[data-number="${square}"]`)
-        .classList.add('square--ships');
-    });
-    this.props.state.ships_2.forEach((square) => {
-      document
-        .querySelector(`.player2 .square[data-number="${square}"]`)
-        .classList.add('square--ships');
-    });
-  }
-
   render() {
     return (
       <div className="win-screen">
@@ -28,9 +10,9 @@ class WinScreen extends React.Component {
         <div className="field-container">
           {!this.props.state.turnEnd && (
             <Field
-              className="own player1"
+              className="own"
               title="Player 1 field"
-              renderFields={this.renderFields}
+              ships={this.props.state.ships_1}
             />
           )}
 
@@ -40,9 +22,9 @@ class WinScreen extends React.Component {
 
           {!this.props.state.turnEnd && (
             <Field
-              className="own player2"
+              className="own"
               title="Player 2 field"
-              renderFields={this.renderFields}
+              ships={this.props.state.ships_2}
             />
           )}
         </div>

@@ -89,7 +89,6 @@ class App extends React.Component {
         this.setState((state) => {
           return {
             [hits]: [...state[hits], target],
-            // [ships]: state[ships].filter((item) => item !== target),
           };
         }, this.checkEndGame);
       } else {

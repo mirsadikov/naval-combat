@@ -4,24 +4,12 @@ import Field from './Field';
 class ShipsArrangementScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.renderFields = this.renderFields.bind(this);
     this.placeShips = this.placeShips.bind(this);
     this.confirmShips = this.confirmShips.bind(this);
 
     this.state = {
       selectedShip: [],
     };
-  }
-
-  renderFields() {
-    document.querySelectorAll('.square--selected').forEach((item) => {
-      item.classList.remove('square--selected');
-    });
-    this.state.selectedShip.forEach((square) => {
-      document
-        .querySelector(`.square[data-number="${square}"]`)
-        .classList.add('square--selected');
-    });
   }
 
   placeShips(e) {
@@ -60,7 +48,7 @@ class ShipsArrangementScreen extends React.Component {
             className="select"
             title={`Player ${this.props.turn} field`}
             onClick={this.placeShips}
-            renderFields={this.renderFields}
+            ships={this.state.selectedShip}
           />
         </div>
       </div>
