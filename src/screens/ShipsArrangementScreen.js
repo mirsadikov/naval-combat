@@ -1,7 +1,10 @@
 import React from 'react';
 import Field from '../components/Field';
+import { GameContext } from '../contexts/gameContext';
 
 class ShipsArrangementScreen extends React.Component {
+  static contextType = GameContext;
+
   constructor(props) {
     super(props);
     this.placeShips = this.placeShips.bind(this);
@@ -23,7 +26,7 @@ class ShipsArrangementScreen extends React.Component {
             (item) => item !== number,
           ),
         });
-      } else if (this.state.selectedShip.length < 8) {
+      } else if (this.state.selectedShip.length < 2) {
         this.setState((state) => {
           return { selectedShip: [...state.selectedShip, number] };
         });
@@ -32,13 +35,14 @@ class ShipsArrangementScreen extends React.Component {
   }
 
   confirmShips() {
-    if (this.state.selectedShip.length === 8) {
-      this.props.confirmSquare(this.state.selectedShip);
+    if (this.state.selectedShip.length === 2) {
+      this.context.confirmShips(this.state.selectedShip);
       this.setState({ selectedShip: [] });
     }
   }
 
   render() {
+    const { turn } = this.context;
     return (
       <div className="ships-arrangement-screen">
         <h1>Ships arrangement</h1>
@@ -46,7 +50,7 @@ class ShipsArrangementScreen extends React.Component {
         <div className="field-container">
           <Field
             className="select"
-            title={`Player ${this.props.turn} field`}
+            title={`Player ${turn} field`}
             onClick={this.placeShips}
             ships={this.state.selectedShip}
           />

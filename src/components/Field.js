@@ -21,7 +21,7 @@ class Field extends React.Component {
       squares.forEach((s) => {
         field
           .querySelector(`.square[data-number="${s}"]`)
-          .classList.add(className);
+          ?.classList.add(className);
       });
     };
 
