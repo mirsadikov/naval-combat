@@ -1,9 +1,9 @@
 import './App.css';
 import React from 'react';
-import MainMenu from './components/MainMenu';
-import ShipsArrangementScreen from './components/ShipsArrangementScreen';
-import GameScreen from './components/GameScreen';
-import WinScreen from './components/WinScreen';
+import MainMenu from './screens/MainMenu';
+import ShipsArrangementScreen from './screens/ShipsArrangementScreen';
+import GameScreen from './screens/GameScreen';
+import WinScreen from './screens/WinScreen';
 
 const initialState = {
   step: 0,
