@@ -5,22 +5,32 @@ import { GameContext } from '../contexts/gameContext';
 class WinScreen extends React.Component {
   static contextType = GameContext;
   render() {
-    const { turn, ships_1, turnEnd, newGame, ships_2 } = this.context;
+    const { turn, ships_1, turnEnd, newGame, ships_2, hits_1, hits_2, goMain } =
+      this.context;
     return (
       <div className="win-screen">
-        <h2>Player {turn} wins!</h2>
+        <div className="win-screen__header">
+          <h2 className="win-screen__title">Player {turn} wins!</h2>
+        </div>
 
-        <div className="field-container">
+        <div className="win-screen__fields">
           {!turnEnd && (
-            <Field className="own" title="Player 1 field" ships={ships_1} />
+            <div className="win-screen__field">
+              <h3>Player 1 field</h3>
+              <Field className="own" ships={ships_1} hits={hits_2} />
+            </div>
           )}
 
-          <div className="field__buttons">
+          <div className="win-screen__field-btns">
             <button onClick={newGame}>New game</button>
+            <button onClick={goMain}>Main menu</button>
           </div>
 
           {!turnEnd && (
-            <Field className="own" title="Player 2 field" ships={ships_2} />
+            <div className="win-screen__field">
+              <h3>Player 2 field</h3>
+              <Field className="own" ships={ships_2} hits={hits_1} />
+            </div>
           )}
         </div>
       </div>

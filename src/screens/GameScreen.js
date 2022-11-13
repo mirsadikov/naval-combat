@@ -66,23 +66,28 @@ class GameScreen extends React.Component {
 
     return (
       <div className="game-screen">
-        <button onClick={newGame}>Start</button>
+        <div className="game-screen__header">
+          <button className="game-screen__btn" onClick={newGame}>
+            New game
+          </button>
+          <h2 className="game-screen__title">Player {turn}</h2>
+        </div>
 
-        <h2>Player {turn}</h2>
-
-        <div className="field-container">
+        <div className="game-screen__fields">
           {!turnEnd && (
-            <Field
-              className={turn === 1 ? 'own' : 'enemy'}
-              title={turn === 1 ? 'Your field' : 'Enemy field'}
-              ships={turn === 1 && ships_1}
-              hits={hits_2}
-              misses={misses_2}
-              onClick={turn === 2 ? this.selectAttack : undefined}
-            />
+            <div className="game-screen__field">
+              <h3>{turn === 1 ? 'Your field' : 'Enemy field'}</h3>
+              <Field
+                className={turn === 1 ? 'own' : 'enemy'}
+                ships={turn === 1 && ships_1}
+                hits={hits_2}
+                misses={misses_2}
+                onClick={turn === 2 ? this.selectAttack : undefined}
+              />
+            </div>
           )}
 
-          <div className="field__buttons">
+          <div className="game-screen__field-btns">
             {!turnChange && <button onClick={attackSquare}>Attack</button>}
             {turnChange && !turnEnd && (
               <button onClick={endTurn}>End turn</button>
@@ -91,14 +96,16 @@ class GameScreen extends React.Component {
           </div>
 
           {!turnEnd && (
-            <Field
-              className={turn === 2 ? 'own' : 'enemy'}
-              title={turn === 2 ? 'Your field' : 'Enemy field'}
-              ships={turn === 2 && ships_2}
-              hits={hits_1}
-              misses={misses_1}
-              onClick={turn === 1 ? this.selectAttack : undefined}
-            />
+            <div className="game-screen__field">
+              <h3>{turn === 2 ? 'Your field' : 'Enemy field'}</h3>
+              <Field
+                className={turn === 2 ? 'own' : 'enemy'}
+                ships={turn === 2 && ships_2}
+                hits={hits_1}
+                misses={misses_1}
+                onClick={turn === 1 ? this.selectAttack : undefined}
+              />
+            </div>
           )}
         </div>
       </div>

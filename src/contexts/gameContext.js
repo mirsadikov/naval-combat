@@ -14,14 +14,9 @@ const GameProvider = function ({ children }) {
   const [turnChange, setTurnChange] = useState(false);
   const [turnEnd, setTurnEnd] = useState(false);
 
-  const startGame = () => {
-    setStep(1);
-    setTurn(1);
-  };
-
-  const newGame = () => {
-    setStep(1);
-    setTurn(1);
+  const reset = () => {
+    setStep(0);
+    setTurn(undefined);
     setShips_1([]);
     setHits_1([]);
     setMisses_1([]);
@@ -30,6 +25,12 @@ const GameProvider = function ({ children }) {
     setMisses_2([]);
     setTurnChange(false);
     setTurnEnd(false);
+  };
+
+  const newGame = () => {
+    reset();
+    setStep(1);
+    setTurn(1);
   };
 
   const confirmShips = (ships) => {
@@ -78,9 +79,14 @@ const GameProvider = function ({ children }) {
   };
 
   const checkEndGame = () => {
-    if (hits_1.length === 2 || hits_2.length === 2) {
+    if (hits_1.length === 8 || hits_2.length === 8) {
       setStep(3);
     }
+  };
+
+  const goMain = () => {
+    reset();
+    setStep(0);
   };
 
   return (
@@ -96,8 +102,9 @@ const GameProvider = function ({ children }) {
         misses_2,
         turnChange,
         turnEnd,
-        startGame,
         newGame,
+        reset,
+        goMain,
         confirmShips,
         attack,
         endTurn,

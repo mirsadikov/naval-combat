@@ -5,11 +5,11 @@ class MainMenu extends React.Component {
   static contextType = GameContext;
 
   render() {
-    const { startGame } = this.context;
+    const { newGame } = this.context;
     return (
       <div className="main-menu">
         <h1 className="main-menu__title">Naval Combat</h1>
-        <button className="main-menu__button" onClick={startGame}>
+        <button className="main-menu__button" onClick={newGame}>
           Start
         </button>
       </div>

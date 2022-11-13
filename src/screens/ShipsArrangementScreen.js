@@ -26,7 +26,7 @@ class ShipsArrangementScreen extends React.Component {
             (item) => item !== number,
           ),
         });
-      } else if (this.state.selectedShip.length < 2) {
+      } else if (this.state.selectedShip.length < 8) {
         this.setState((state) => {
           return { selectedShip: [...state.selectedShip, number] };
         });
@@ -35,7 +35,7 @@ class ShipsArrangementScreen extends React.Component {
   }
 
   confirmShips() {
-    if (this.state.selectedShip.length === 2) {
+    if (this.state.selectedShip.length === 8) {
       this.context.confirmShips(this.state.selectedShip);
       this.setState({ selectedShip: [] });
     }
@@ -44,16 +44,21 @@ class ShipsArrangementScreen extends React.Component {
   render() {
     const { turn } = this.context;
     return (
-      <div className="ships-arrangement-screen">
-        <h1>Ships arrangement</h1>
-        <button onClick={this.confirmShips}>Confirm</button>
-        <div className="field-container">
+      <div className="ships-arrangement">
+        <h2 className="ships-arrangement__title">Ships arrangement</h2>
+        <div className="ships-arrangement__field">
+          <h3 className="ships-arrangement__subtitle">{`Player ${turn} field`}</h3>
           <Field
             className="select"
-            title={`Player ${turn} field`}
             onClick={this.placeShips}
             ships={this.state.selectedShip}
           />
+          <button
+            className="ships-arrangement__button"
+            onClick={this.confirmShips}
+          >
+            Confirm
+          </button>
         </div>
       </div>
     );
