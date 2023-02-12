@@ -1,9 +1,10 @@
 import { useState, createContext } from 'react';
+import { GAME, MAIN_MENU, SHIP_ARRANGEMENT, WIN_SCREEN } from './gameContext.constants';
 
 const GameContext = createContext();
 
 const GameProvider = function ({ children }) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(MAIN_MENU);
   const [turn, setTurn] = useState(undefined);
   const [ships_1, setShips_1] = useState([]);
   const [hits_1, setHits_1] = useState([]);
@@ -15,7 +16,7 @@ const GameProvider = function ({ children }) {
   const [turnEnd, setTurnEnd] = useState(false);
 
   const reset = () => {
-    setStep(0);
+    setStep(MAIN_MENU);
     setTurn(undefined);
     setShips_1([]);
     setHits_1([]);
@@ -29,7 +30,7 @@ const GameProvider = function ({ children }) {
 
   const newGame = () => {
     reset();
-    setStep(1);
+    setStep(SHIP_ARRANGEMENT);
     setTurn(1);
   };
 
@@ -37,8 +38,10 @@ const GameProvider = function ({ children }) {
     if (turn === 1) {
       setTurn(2);
       setShips_1(ships);
-    } else if (turn === 2) {
-      setStep(2);
+      return;
+    }
+    if (turn === 2) {
+      setStep(GAME);
       setShips_2(ships);
       setTurn(1);
       setTurnChange(true);
@@ -46,21 +49,37 @@ const GameProvider = function ({ children }) {
     }
   };
 
+  const attackHandler = ({ ship, target, hits, misses, setHits, setMisses }) => {
+    if (ship.includes(target)) {
+      setHits([...hits, target]);
+    } else {
+      setMisses([...misses, target]);
+      setTurnChange(true);
+    }
+    return;
+  };
+
   const attack = (target) => {
     if (turn === 1) {
-      if (ships_2.includes(target)) {
-        setHits_1([...hits_1, target]);
-      } else {
-        setMisses_1([...misses_1, target]);
-        setTurnChange(true);
-      }
-    } else if (turn === 2) {
-      if (ships_1.includes(target)) {
-        setHits_2([...hits_2, target]);
-      } else {
-        setMisses_2([...misses_2, target]);
-        setTurnChange(true);
-      }
+      attackHandler({
+        ship: ships_2,
+        target,
+        hits: hits_1,
+        misses: misses_1,
+        setHits: setHits_1,
+        setMisses: setMisses_1,
+      });
+    }
+
+    if (turn === 2) {
+      attackHandler({
+        ship: ships_1,
+        target,
+        hits: hits_2,
+        misses: misses_2,
+        setHits: setHits_2,
+        setMisses: setMisses_2,
+      });
     }
   };
 
@@ -80,13 +99,13 @@ const GameProvider = function ({ children }) {
 
   const checkEndGame = () => {
     if (hits_1.length === 8 || hits_2.length === 8) {
-      setStep(3);
+      setStep(WIN_SCREEN);
     }
   };
 
   const goMain = () => {
     reset();
-    setStep(0);
+    setStep(MAIN_MENU);
   };
 
   return (

@@ -18,18 +18,21 @@ class ShipsArrangementScreen extends React.Component {
   placeShips(e) {
     const square = e.target;
     if (square.classList.contains('square')) {
-      const number = square.dataset.number;
+      const number = parseInt(square.dataset.number);
 
       if (this.state.selectedShip.includes(number)) {
         this.setState({
-          selectedShip: this.state.selectedShip.filter(
-            (item) => item !== number,
-          ),
+          selectedShip: this.state.selectedShip.filter((item) => item !== number),
         });
-      } else if (this.state.selectedShip.length < 8) {
+        return;
+      }
+
+      if (this.state.selectedShip.length < 8) {
         this.setState((state) => {
           return { selectedShip: [...state.selectedShip, number] };
         });
+
+        return;
       }
     }
   }
@@ -48,15 +51,8 @@ class ShipsArrangementScreen extends React.Component {
         <h2 className="ships-arrangement__title">Ships arrangement</h2>
         <div className="ships-arrangement__field">
           <h3 className="ships-arrangement__subtitle">{`Player ${turn} field`}</h3>
-          <Field
-            className="select"
-            onClick={this.placeShips}
-            ships={this.state.selectedShip}
-          />
-          <button
-            className="ships-arrangement__button"
-            onClick={this.confirmShips}
-          >
+          <Field className="select" onClick={this.placeShips} ships={this.state.selectedShip} />
+          <button className="ships-arrangement__button" onClick={this.confirmShips}>
             Confirm
           </button>
         </div>

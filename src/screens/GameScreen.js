@@ -7,7 +7,8 @@ class GameScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      target: undefined,
+      targetNumber: undefined,
+      selectedSquare: undefined,
     };
     this.selectAttack = this.selectAttack.bind(this);
   }
@@ -20,18 +21,16 @@ class GameScreen extends React.Component {
   selectAttack(e) {
     const square = e.target;
     const context = this.context;
-    const number = square.dataset.number;
+    const number = parseInt(square.dataset.number);
     if (
       square.classList.contains('square') &&
       !context[`hits_${context.turn}`].includes(number) &&
       !context[`misses_${context.turn}`].includes(number) &&
       !context.turnChange
     ) {
-      document
-        .querySelector('.square--target')
-        ?.classList.remove('square--target');
+      this.state.selectedSquare?.classList.remove('square--target');
       square.classList.add('square--target');
-      this.setState({ target: number });
+      this.setState({ targetNumber: number, selectedSquare: square });
     }
   }
 
@@ -54,13 +53,12 @@ class GameScreen extends React.Component {
 
     // attack
     const attackSquare = () => {
-      if (this.state.target) {
-        attack(this.state.target);
+      if (this.state.targetNumber) {
+        attack(this.state.targetNumber);
 
-        document
-          .querySelector('.square--target')
-          ?.classList.remove('square--target');
-        this.setState({ target: undefined });
+        // remove target
+        this.state.selectedSquare.classList.remove('square--target');
+        this.setState({ targetNumber: undefined });
       }
     };
 
@@ -79,7 +77,7 @@ class GameScreen extends React.Component {
               <h3>{turn === 1 ? 'Your field' : 'Enemy field'}</h3>
               <Field
                 className={turn === 1 ? 'own' : 'enemy'}
-                ships={turn === 1 && ships_1}
+                ships={turn === 1 ? ships_1 : null}
                 hits={hits_2}
                 misses={misses_2}
                 onClick={turn === 2 ? this.selectAttack : undefined}
@@ -89,9 +87,7 @@ class GameScreen extends React.Component {
 
           <div className="game-screen__field-btns">
             {!turnChange && <button onClick={attackSquare}>Attack</button>}
-            {turnChange && !turnEnd && (
-              <button onClick={endTurn}>End turn</button>
-            )}
+            {turnChange && !turnEnd && <button onClick={endTurn}>End turn</button>}
             {turnEnd && <button onClick={startTurn}>Start turn</button>}
           </div>
 
@@ -100,7 +96,7 @@ class GameScreen extends React.Component {
               <h3>{turn === 2 ? 'Your field' : 'Enemy field'}</h3>
               <Field
                 className={turn === 2 ? 'own' : 'enemy'}
-                ships={turn === 2 && ships_2}
+                ships={turn === 2 ? ships_2 : null}
                 hits={hits_1}
                 misses={misses_1}
                 onClick={turn === 1 ? this.selectAttack : undefined}
