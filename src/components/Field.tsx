@@ -1,16 +1,19 @@
 import React from 'react';
 import Square from './Square';
 
-class Field extends React.Component {
+interface IProps {
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  className: string;
+  hits?: number[];
+  misses?: number[];
+  ships?: number[];
+}
+
+class Field extends React.Component<IProps> {
   render() {
     return (
-      <div
-        className={`${this.props.className} field`}
-        onClick={this.props.onClick}
-        ref={this.currentField}
-      >
+      <div className={`${this.props.className} field`} onClick={this.props.onClick}>
         {new Array(25).fill(0).map((_, index) => {
-          console.log(this.props.ships);
           return (
             <Square
               key={index}

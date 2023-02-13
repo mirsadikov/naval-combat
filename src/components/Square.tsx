@@ -1,8 +1,16 @@
 import React from 'react';
 
-class Square extends React.Component {
+interface IProps {
+  key: number;
+  isHit: boolean | undefined;
+  isMiss: boolean | undefined;
+  isShip: boolean | undefined;
+  number: number;
+}
+
+class Square extends React.Component<IProps> {
   render() {
-    const classes = ['square'];
+    const classes: string[] = ['square'];
     if (this.props.isHit) classes.push('square--hits');
     if (this.props.isMiss) classes.push('square--misses');
     if (this.props.isShip) classes.push('square--ships');

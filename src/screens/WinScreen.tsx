@@ -1,12 +1,14 @@
 import React from 'react';
 import Field from '../components/Field';
-import { GameContext } from '../contexts/gameContext';
+import { GameContext, IGameContext } from '../contexts/gameContext';
 
 class WinScreen extends React.Component {
   static contextType = GameContext;
+
   render() {
-    const { turn, ships_1, turnEnd, newGame, ships_2, hits_1, hits_2, goMain } =
-      this.context;
+    const { turn, ships_1, turnEnd, ships_2, hits_1, hits_2, goMain, newGame } = this
+      .context as IGameContext;
+
     return (
       <div className="win-screen">
         <div className="win-screen__header">

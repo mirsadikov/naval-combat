@@ -2,10 +2,18 @@ import React from 'react';
 import Field from '../components/Field';
 import { GameContext } from '../contexts/gameContext';
 
-class ShipsArrangementScreen extends React.Component {
+interface IProps {
+  className?: string;
+}
+
+interface IState {
+  selectedShip: number[];
+}
+
+class ShipsArrangementScreen extends React.Component<IProps, IState> {
   static contextType = GameContext;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.placeShips = this.placeShips.bind(this);
     this.confirmShips = this.confirmShips.bind(this);
@@ -15,9 +23,11 @@ class ShipsArrangementScreen extends React.Component {
     };
   }
 
-  placeShips(e) {
-    const square = e.target;
-    if (square.classList.contains('square')) {
+  context!: React.ContextType<typeof GameContext>;
+
+  placeShips(e: React.MouseEvent<HTMLDivElement>) {
+    const square = e.target as HTMLDivElement;
+    if (square.classList.contains('square') && square.dataset.number) {
       const number = parseInt(square.dataset.number);
 
       if (this.state.selectedShip.includes(number)) {
@@ -46,6 +56,7 @@ class ShipsArrangementScreen extends React.Component {
 
   render() {
     const { turn } = this.context;
+
     return (
       <div className="ships-arrangement">
         <h2 className="ships-arrangement__title">Ships arrangement</h2>
